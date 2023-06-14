@@ -1,10 +1,16 @@
 package src
 
 type card struct {
-	name     string
-	discount int
+	Name     string
+	Discount int
 }
 
-func newCard(name string, discount int) card {
+var Cards = [3]card{
+	{"General", 100},
+	{"Estudiante", 66},
+	{"Tercera Edad", 50},
+}
+
+func NewCard(name string, discount int) card {
 	return card{name, discount}
 }

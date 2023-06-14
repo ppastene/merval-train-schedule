@@ -55,290 +55,21 @@ Tramo 1-5		Alta:	1126	Media:	1069	Baja:	1012
 Descuentos: Estudiante: 66% - 3ra Edad: 50%
 */
 
-type station struct {
-	name    string
-	minutes int
-	sector  int
-}
-type schedule struct {
-	day        time.Weekday
-	from       int
-	firstTrain time.Time
-	lastTrain  time.Time
-}
-type passenger struct {
-	card card
-	fee  fee
-}
-type card struct {
-	name     string
-	discount int
-}
-type fee struct {
-	name  string
-	value [5]float64
-}
-
-var horaBaja = fee{
-	"Hora Baja",
-	[5]float64{388.0, 534.0, 769.0, 815.0, 1012.0},
-}
-
-var horaMedia = fee{
-	"Hora Media",
-	[5]float64{409.0, 566.0, 811.0, 860.0, 1069.0},
-}
-
-var horaAlta = fee{
-	"Hora Alta",
-	[5]float64{430.0, 590.0, 854.0, 906.0, 1126.0},
-}
-
-var cards = [3]card{
-	card{
-		name:     "General",
-		discount: 100,
-	}, card{
-		name:     "Estudiante",
-		discount: 66,
-	}, card{
-		name:     "Adulto Mayor",
-		discount: 50,
-	},
-}
-
-var stations = [20]station{
-	station{
-		name:    "Puerto",
-		minutes: 0,
-		sector:  1,
-	},
-	station{
-		name:    "Bellavista",
-		minutes: 1,
-		sector:  1,
-	},
-	station{
-		name:    "Francia",
-		minutes: 2,
-		sector:  1,
-	},
-	station{
-		name:    "Baron",
-		minutes: 5,
-		sector:  1,
-	},
-	station{
-		name:    "Portales",
-		minutes: 8,
-		sector:  1,
-	},
-	station{
-		name:    "Recreo",
-		minutes: 11,
-		sector:  2,
-	},
-	station{
-		name:    "Miramar",
-		minutes: 13,
-		sector:  2,
-	},
-	station{
-		name:    "Viña del Mar",
-		minutes: 14,
-		sector:  2,
-	},
-	station{
-		name:    "Hospital",
-		minutes: 16,
-		sector:  2,
-	},
-	station{
-		name:    "Chorrillos",
-		minutes: 17,
-		sector:  2,
-	},
-	station{
-		name:    "El Salto",
-		minutes: 19,
-		sector:  2,
-	},
-	station{
-		name:    "Quilpue",
-		minutes: 40,
-		sector:  3,
-	},
-	station{
-		name:    "El Sol",
-		minutes: 42,
-		sector:  3,
-	},
-	station{
-		name:    "El Belloto",
-		minutes: 45,
-		sector:  3,
-	},
-	station{
-		name:    "Las Americas",
-		minutes: 47,
-		sector:  4,
-	},
-	station{
-		name:    "La Concepcion",
-		minutes: 49,
-		sector:  4,
-	},
-	station{
-		name:    "Villa Alemana",
-		minutes: 51,
-		sector:  4,
-	},
-	station{
-		name:    "Sargento Aldea",
-		minutes: 53,
-		sector:  4,
-	},
-	station{
-		name:    "Peñablanca",
-		minutes: 56,
-		sector:  4,
-	},
-	station{
-		name:    "Limache",
-		minutes: 69,
-		sector:  5,
-	},
-}
-
-func getFeeTime(t time.Time) fee {
-	var f fee
-	switch t.Weekday() {
-	case 6, 0:
-		f = horaBaja
-	case 1, 2, 3, 4, 5:
-		if src.IsTimeBetweenDates(t, time.Date(t.Year(), t.Month(), t.Day(), 10, 30, 0, 0, t.Location()), time.Date(t.Year(), t.Month(), t.Day(), 12, 59, 59, 0, t.Location())) ||
-			src.IsTimeBetweenDates(t, time.Date(t.Year(), t.Month(), t.Day(), 14, 00, 0, 0, t.Location()), time.Date(t.Year(), t.Month(), t.Day(), 15, 59, 59, 0, t.Location())) ||
-			src.IsTimeBetweenDates(t, time.Date(t.Year(), t.Month(), t.Day(), 21, 00, 0, 0, t.Location()), time.Date(t.Year(), t.Month(), t.Day(), 23, 59, 59, 0, t.Location())) {
-			f = horaBaja
-		} else if src.IsTimeBetweenDates(t, time.Date(t.Year(), t.Month(), t.Day(), 6, 00, 0, 0, t.Location()), time.Date(t.Year(), t.Month(), t.Day(), 6, 29, 59, 0, t.Location())) ||
-			src.IsTimeBetweenDates(t, time.Date(t.Year(), t.Month(), t.Day(), 9, 30, 0, 0, t.Location()), time.Date(t.Year(), t.Month(), t.Day(), 10, 29, 59, 0, t.Location())) ||
-			src.IsTimeBetweenDates(t, time.Date(t.Year(), t.Month(), t.Day(), 13, 00, 00, 0, t.Location()), time.Date(t.Year(), t.Month(), t.Day(), 13, 59, 59, 0, t.Location())) ||
-			src.IsTimeBetweenDates(t, time.Date(t.Year(), t.Month(), t.Day(), 16, 00, 0, 0, t.Location()), time.Date(t.Year(), t.Month(), t.Day(), 16, 59, 59, 0, t.Location())) ||
-			src.IsTimeBetweenDates(t, time.Date(t.Year(), t.Month(), t.Day(), 20, 00, 0, 0, t.Location()), time.Date(t.Year(), t.Month(), t.Day(), 20, 59, 59, 0, t.Location())) {
-			f = horaMedia
-		} else if src.IsTimeBetweenDates(t, time.Date(t.Year(), t.Month(), t.Day(), 6, 30, 0, 0, t.Location()), time.Date(t.Year(), t.Month(), t.Day(), 9, 29, 59, 0, t.Location())) ||
-			src.IsTimeBetweenDates(t, time.Date(t.Year(), t.Month(), t.Day(), 17, 00, 0, 0, t.Location()), time.Date(t.Year(), t.Month(), t.Day(), 19, 59, 59, 0, t.Location())) {
-			f = horaAlta
-		}
-	}
-	return f
-}
-
-func getFeePrice(f fee, originIndex, destinationIndex int) int {
-	originSector, destinationSector := stations[originIndex].sector, stations[destinationIndex].sector
-	return int(f.value[src.Abs(destinationSector-originSector)])
-}
-
-func newSchedule(day time.Weekday, from int, firstTrain time.Time, lastTrain time.Time) schedule {
-	return schedule{day, from, firstTrain, lastTrain}
-}
-
-func getDaySchedule(t time.Time, direction int) schedule {
-	var daySchedule schedule
-	weekday := t.Weekday()
-	if int(weekday) > 6 {
-		weekday = src.DayOverflow(weekday)
-	}
-	switch direction {
-	case 0: // Desde Puerto
-		switch weekday {
-		case 0:
-			daySchedule = schedule{
-				day:        weekday,
-				from:       0,
-				firstTrain: time.Date(t.Year(), t.Month(), t.Day(), 9, 0, 0, 0, t.Location()),
-				lastTrain:  time.Date(t.Year(), t.Month(), t.Day(), 22, 12, 0, 0, t.Location()),
-			}
-		case 6:
-			daySchedule = schedule{
-				day:        weekday,
-				from:       0,
-				firstTrain: time.Date(t.Year(), t.Month(), t.Day(), 8, 30, 0, 0, t.Location()),
-				lastTrain:  time.Date(t.Year(), t.Month(), t.Day(), 22, 24, 0, 0, t.Location()),
-			}
-		case 1, 2, 3, 4, 5:
-			daySchedule = schedule{
-				day:        weekday,
-				from:       0,
-				firstTrain: time.Date(t.Year(), t.Month(), t.Day(), 6, 15, 0, 0, t.Location()),
-				lastTrain:  time.Date(t.Year(), t.Month(), t.Day(), 22, 30, 0, 0, t.Location()),
-			}
-		}
-	case 19: // Desde Limache
-		switch weekday {
-		case 0:
-			daySchedule = schedule{
-				day:        weekday,
-				from:       19,
-				firstTrain: time.Date(t.Year(), t.Month(), t.Day(), 8, 0, 0, 0, t.Location()),
-				lastTrain:  time.Date(t.Year(), t.Month(), t.Day(), 22, 6, 0, 0, t.Location()),
-			}
-		case 6:
-			daySchedule = schedule{
-				day:        weekday,
-				from:       19,
-				firstTrain: time.Date(t.Year(), t.Month(), t.Day(), 7, 30, 0, 0, t.Location()),
-				lastTrain:  time.Date(t.Year(), t.Month(), t.Day(), 22, 26, 0, 0, t.Location()),
-			}
-		case 1, 2, 3, 4, 5:
-
-			daySchedule = schedule{
-				day:        weekday,
-				from:       19,
-				firstTrain: time.Date(t.Year(), t.Month(), t.Day(), 6, 15, 0, 0, t.Location()),
-				lastTrain:  time.Date(t.Year(), t.Month(), t.Day(), 22, 15, 0, 0, t.Location()),
-			}
-		}
-	}
-	return daySchedule
-}
-
-func getDayFromDate(t time.Time) time.Weekday {
-	weekday := t.Weekday()
-	return weekday
-}
-
-func getTimeTravelDuration(originIndex, destinationIndex int) time.Duration {
-	minutes := src.Abs(stations[destinationIndex].minutes - stations[originIndex].minutes)
-	return time.Duration(time.Duration(minutes) * time.Minute)
-}
-
-func getTrainDirection(originIndex, destinationIndex int) int {
-	var direction int
-	if originIndex < destinationIndex {
-		direction = 0 // Tren parte de Estacion Puerto
-	} else if originIndex > destinationIndex {
-		direction = 19 // Tren parte de Estacion Limache
-	}
-	return direction
-}
-
-func getStationTrainSchedule(originIndex, destinationIndex, userType int) {
+func getStationTrainSchedule(origin, destination src.Station, userType int) {
 	currentTime := time.Now()
-	direction := getTrainDirection(originIndex, destinationIndex)
-	trainSchedule := getDaySchedule(currentTime, direction)
-	firstTrain := trainSchedule.firstTrain
-	lastTrain := trainSchedule.lastTrain
-	passenger := cards[userType]
+	direction := origin.GetTravelDirection(destination)
+	trainSchedule := src.GetDaySchedule(currentTime, direction)
+	firstTrain, lastTrain := trainSchedule.FirstTrain, trainSchedule.LastTrain
+	passenger := src.Cards[userType]
 	currentTrain := firstTrain
-	travelTime := time.Duration(src.Abs(stations[originIndex].minutes-stations[destinationIndex].minutes)) * time.Minute
-	fmt.Printf("Train from %v to %v\n", stations[originIndex].name, stations[destinationIndex].name)
+	travelTime := time.Duration(src.Abs(origin.Minutes-destination.Minutes)) * time.Minute
+	fmt.Printf("Train from %v to %v\n", origin.Name, destination.Name)
 	for lastTrain.After(currentTrain) {
-		trainFee := getFeeTime(currentTrain)
-		feePrice := getFeePrice(trainFee, originIndex, destinationIndex) * passenger.discount / 100
-		departure := currentTrain.Format(time.Kitchen)
-		arrival := currentTrain.Add(time.Minute + travelTime).Format(time.Kitchen)
-		fmt.Printf("Departure %v - Arrival: %v - Fee: %v - Price: %v\n", departure, arrival, trainFee.name, feePrice)
+		trainFee := src.GetFeeFromTime(currentTrain)
+		feePrice := trainFee.GetFeePrice(origin, destination) * passenger.Discount / 100 // REFACTOR
+		departure := currentTrain.Format(time.Kitchen)                                   // REFACTOR
+		arrival := currentTrain.Add(time.Minute + travelTime).Format(time.Kitchen)       // REFACTOR
+		fmt.Printf("Departure %v - Arrival: %v - Fee: %v - Price: %v\n", departure, arrival, trainFee.Name, feePrice)
 		currentTrain = currentTrain.Add(time.Minute * 12)
 	}
 }
@@ -348,7 +79,6 @@ func drawTable() {
 }
 
 func main() {
-	//getStationTrainSchedule(19, 0)
 	var origin, destination, user int
 	fmt.Println("Tramo 1: 1: Puerto - 2: Bellavista - 3: Francia - 3: Baron - 4: Portales")
 	fmt.Println("Tramo 2: 5: Recreo - 6 Miramar - 7: Viña del Mar - 8: Hospital - 9: Chorrillos - 10: El Salto")
@@ -362,5 +92,14 @@ func main() {
 	if err != nil {
 		fmt.Printf("Your input could not be read%v", err)
 	}
-	getStationTrainSchedule(origin, destination, user)
+	//time := time.Date(2023, 7, 14, 8, 30, 0, 0, time.Local)
+	originStation, originError := src.GetStation(origin)
+	destinationStation, destinationError := src.GetStation(destination)
+	if originError != nil {
+		fmt.Println("An error happened:", originError)
+	} else if destinationError != nil {
+		fmt.Println("An error happened:", destinationError)
+		return
+	}
+	getStationTrainSchedule(originStation, destinationStation, 0)
 }

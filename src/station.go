@@ -1,114 +1,134 @@
 package src
 
-type station struct {
-	name    string
-	minutes int
-	sector  int
+import "errors"
+
+type Station struct {
+	Name    string
+	Minutes int
+	Sector  int
 }
 
-func newStation(name string, minutes int, sector int) station {
-	return station{name, minutes, sector}
+var Stations = [20]Station{
+	{
+		Name:    "Puerto",
+		Minutes: 0,
+		Sector:  1,
+	},
+	{
+		Name:    "Bellavista",
+		Minutes: 1,
+		Sector:  1,
+	},
+	{
+		Name:    "Francia",
+		Minutes: 2,
+		Sector:  1,
+	},
+	{
+		Name:    "Baron",
+		Minutes: 5,
+		Sector:  1,
+	},
+	{
+		Name:    "Portales",
+		Minutes: 8,
+		Sector:  1,
+	},
+	{
+		Name:    "Recreo",
+		Minutes: 11,
+		Sector:  2,
+	},
+	{
+		Name:    "Miramar",
+		Minutes: 13,
+		Sector:  2,
+	},
+	{
+		Name:    "Viña del Mar",
+		Minutes: 14,
+		Sector:  2,
+	},
+	{
+		Name:    "Hospital",
+		Minutes: 16,
+		Sector:  2,
+	},
+	{
+		Name:    "Chorrillos",
+		Minutes: 17,
+		Sector:  2,
+	},
+	{
+		Name:    "El Salto",
+		Minutes: 19,
+		Sector:  2,
+	},
+	{
+		Name:    "Quilpue",
+		Minutes: 40,
+		Sector:  3,
+	},
+	{
+		Name:    "El Sol",
+		Minutes: 42,
+		Sector:  3,
+	},
+	{
+		Name:    "El Belloto",
+		Minutes: 45,
+		Sector:  3,
+	},
+	{
+		Name:    "Las Americas",
+		Minutes: 47,
+		Sector:  4,
+	},
+	{
+		Name:    "La Concepcion",
+		Minutes: 49,
+		Sector:  4,
+	},
+	{
+		Name:    "Villa Alemana",
+		Minutes: 51,
+		Sector:  4,
+	},
+	{
+		Name:    "Sargento Aldea",
+		Minutes: 53,
+		Sector:  4,
+	},
+	{
+		Name:    "Peñablanca",
+		Minutes: 56,
+		Sector:  4,
+	},
+	{
+		Name:    "Limache",
+		Minutes: 69,
+		Sector:  5,
+	},
 }
 
-var Stations = [20]station{
-	station{
-		name:    "Puerto",
-		minutes: 0,
-		sector:  1,
-	},
-	station{
-		name:    "Bellavista",
-		minutes: 1,
-		sector:  1,
-	},
-	station{
-		name:    "Francia",
-		minutes: 2,
-		sector:  1,
-	},
-	station{
-		name:    "Baron",
-		minutes: 5,
-		sector:  1,
-	},
-	station{
-		name:    "Portales",
-		minutes: 8,
-		sector:  1,
-	},
-	station{
-		name:    "Recreo",
-		minutes: 11,
-		sector:  2,
-	},
-	station{
-		name:    "Miramar",
-		minutes: 13,
-		sector:  2,
-	},
-	station{
-		name:    "Viña del Mar",
-		minutes: 14,
-		sector:  2,
-	},
-	station{
-		name:    "Hospital",
-		minutes: 16,
-		sector:  2,
-	},
-	station{
-		name:    "Chorrillos",
-		minutes: 17,
-		sector:  2,
-	},
-	station{
-		name:    "El Salto",
-		minutes: 19,
-		sector:  2,
-	},
-	station{
-		name:    "Quilpue",
-		minutes: 40,
-		sector:  3,
-	},
-	station{
-		name:    "El Sol",
-		minutes: 42,
-		sector:  3,
-	},
-	station{
-		name:    "El Belloto",
-		minutes: 45,
-		sector:  3,
-	},
-	station{
-		name:    "Las Americas",
-		minutes: 47,
-		sector:  4,
-	},
-	station{
-		name:    "La Concepcion",
-		minutes: 49,
-		sector:  4,
-	},
-	station{
-		name:    "Villa Alemana",
-		minutes: 51,
-		sector:  4,
-	},
-	station{
-		name:    "Sargento Aldea",
-		minutes: 53,
-		sector:  4,
-	},
-	station{
-		name:    "Peñablanca",
-		minutes: 56,
-		sector:  4,
-	},
-	station{
-		name:    "Limache",
-		minutes: 69,
-		sector:  5,
-	},
+func NewStation(Name string, Minutes int, Sector int) Station {
+	return Station{Name, Minutes, Sector}
+}
+
+func GetStation(index int) (Station, error) {
+	if index < 0 || index > len(Stations) {
+		return Station{}, errors.New("The station doesn't exist")
+	}
+	return Stations[index], nil
+}
+
+func (origin Station) GetTravelTime(destination Station) int {
+	return Abs(origin.Minutes - destination.Minutes)
+}
+
+func (origin Station) GetTravelDirection(destination Station) int {
+	if origin.Minutes < destination.Minutes {
+		return 0 // Tren sale de Estacion Puerto
+	}
+	return 19 // Tren sale de Estacion Limache
 }
