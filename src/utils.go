@@ -23,3 +23,8 @@ func IsTimeBetweenDates(t, min, max time.Time) bool {
 	}
 	return (t.Equal(min) || t.After(min)) && (t.Equal(max) || t.Before(max))
 }
+
+func GetDayFromDateTime(t time.Time) time.Weekday {
+	weekday := t.Weekday()
+	return weekday
+}

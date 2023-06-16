@@ -5,6 +5,6 @@ type passenger struct {
 	fee  fee
 }
 
-func newPassenger(card card, fee fee) passenger {
+func NewPassenger(card card, fee fee) passenger {
 	return passenger{card, fee}
 }
