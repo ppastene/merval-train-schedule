@@ -1,0 +1,14 @@
+[
+    {
+        "nombre": "General",
+        "descuento": 100
+    },
+    {
+        "nombre": "Estudiante",
+        "descuento": 66
+    },
+    {
+        "nombre": "Tercera Edad",
+        "descuento": 50
+    }
+]

@@ -1,4 +1,4 @@
-package src
+package helpers
 
 import "time"
 
