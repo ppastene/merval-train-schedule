@@ -24,11 +24,11 @@ Se puede calcular lo siguiente para el usuario
 Todo en base al día en que se ocupa la aplicación ya que la frecuencia y los valores cambian segun si el servicio es en dia de semana o si el servicio ocurre durante hora punta
 
 ## Diagrama de Clases
--- Insertar Diagrama Clases --
+-- Insertar Diagrama Clases --<br>
 Un problema con este proyecto es que si bien hay clases que no tienen una relación directa con otras clases igual dependen de estas para obtener la información que se debe mostrar al usuario. Si bien un sistema como este requiere de muchas mas clases como "Historial" para ver todo el registro de viajes del usuario se hizo lo posible para que esto quedara lo mas simple posible. Además, toda la informacion para generar al usuario esta incrustada en el codigo asi que el usuario no tiene que crear absolutamente nada ya que solo debe ingresar unos valores para obtener la data requerida
 
 ## Caso de Uso
--- Insertar Diagrama Flujo --
+-- Insertar Diagrama Flujo --<br>
 Un usuario quiere viajar un dia viernes desde Estacion Quilpue a Estacion Puerto a las 10:00am. No sabe las horas de salida de los trenes, la distancia que puede tomar el viaje y el valor de la tarifa. Decide usar esta aplicacion para generar el itinerario en base a dicho día, como la aplicacion muestra el itinerario en base al dia actual el usuario tiene que usarla el mismo dia para generar la informacion del dia.
 
 Al abrir la aplicacion el usuario debe ingresar tres valores enteros: Los ID de las estaciones de origen y destino ademas del ID del tipo de tarjeta por si tiene una con beneficio Quilpue tiene ID 11, Puerto tiene ID 0 y la tarjeta general tiene ID 0, por tanto el usuario debe ingresar en pantalla: 11 0 0
