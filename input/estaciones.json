@@ -1,0 +1,102 @@
+[
+    {
+		"nombre":    "Puerto",
+		"duracion": 0,
+		"tramo":  1
+	},
+	{
+		"nombre":    "Bellavista",
+		"duracion": 1,
+		"tramo":  1
+	},
+	{
+		"nombre":    "Francia",
+		"duracion": 2,
+		"tramo":  1
+	},
+	{
+		"nombre":    "Baron",
+		"duracion": 5,
+		"tramo":  1
+	},
+	{
+		"nombre":    "Portales",
+		"duracion": 8,
+		"tramo":  1
+	},
+	{
+		"nombre":    "Recreo",
+		"duracion": 11,
+		"tramo":  2
+	},
+	{
+		"nombre":    "Miramar",
+		"duracion": 13,
+		"tramo":  2
+	},
+	{
+		"nombre":    "Viña del Mar",
+		"duracion": 14,
+		"tramo":  2
+	},
+	{
+		"nombre":    "Hospital",
+		"duracion": 16,
+		"tramo":  2
+	},
+	{
+		"nombre":    "Chorrillos",
+		"duracion": 17,
+		"tramo":  2
+	},
+	{
+		"nombre":    "El Salto",
+		"duracion": 19,
+		"tramo":  2
+	},
+	{
+		"nombre":    "Quilpue",
+		"duracion": 40,
+		"tramo":  3
+	},
+	{
+		"nombre":    "El Sol",
+		"duracion": 42,
+		"tramo":  3
+	},
+	{
+		"nombre":    "El Belloto",
+		"duracion": 45,
+		"tramo":  3
+	},
+	{
+		"nombre":    "Las Americas",
+		"duracion": 47,
+		"tramo":  4
+	},
+	{
+		"nombre":    "La Concepcion",
+		"duracion": 49,
+		"tramo":  4
+	},
+	{
+		"nombre":    "Villa Alemana",
+		"duracion": 51,
+		"tramo":  4
+	},
+	{
+		"nombre":    "Sargento Aldea",
+		"duracion": 53,
+		"tramo":  4
+	},
+	{
+		"nombre":    "Peñablanca",
+		"duracion": 56,
+		"tramo":  4
+	},
+	{
+		"nombre":    "Limache",
+		"duracion": 69,
+		"tramo":  5
+	}
+]

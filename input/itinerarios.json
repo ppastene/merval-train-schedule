@@ -1,0 +1,38 @@
+[
+    {
+        "dia": "Sunday",
+        "direccion": 0,
+        "primerTren": "09:00:00",
+        "ultimoTren": "22:12:00"
+    },
+    {
+        "dia": "Saturday",
+        "direccion": 0,
+        "primerTren": "08:30:00",
+        "ultimoTren": "22:24:00"
+    },
+    {
+        "dia": "Weekday",
+        "direccion": 0,
+        "primerTren": "08:00:00",
+        "ultimoTren": "22:06:00"
+    },
+    {
+        "dia": "Sunday",
+        "direccion": 19,
+        "primerTren": "09:00:00",
+        "ultimoTren": "22:12:00"
+    },
+    {
+        "dia": "Saturday",
+        "direccion": 19,
+        "primerTren": "07:30:00",
+        "ultimoTren": "22:26:00"
+    },
+    {
+        "dia": "Weekday",
+        "direccion": 19,
+        "primerTren": "06:15:00",
+        "ultimoTren": "22:15:00"
+    }
+]
