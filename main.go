@@ -76,11 +76,11 @@ func dibujarTabla(viaje structs.Viaje, itinerario structs.Itinerario, tiempoViaj
 		horaLlegada = horaSalida.Add(tiempoViaje)
 		tarifa = structs.ObtenerTarifaSegunFecha(horaLlegada)
 		valorViaje = obtenerValorViaje(tarifa, tramo, tarjeta)
-		fmt.Printf("Salida: %v Llegada %v Hora: %v Valor %v\n", horaSalida.Format(time.Kitchen), horaLlegada.Format(time.Kitchen), tarifa.Nombre, valorViaje)
+		fmt.Printf("Salida: %v Llegada: %v Tarifa: %v Valor: %v\n", horaSalida.Format(time.Kitchen), horaLlegada.Format(time.Kitchen), tarifa.Nombre, valorViaje)
 		horaSalida = horaSalida.Add(frecuencia)
 	}
 	horaSalida = ultimoTren
-	fmt.Printf("Salida: %v Llegada %v Hora: %v Valor %v\n", horaSalida.Format(time.Kitchen), horaLlegada.Format(time.Kitchen), tarifa.Nombre, valorViaje)
+	fmt.Printf("Salida: %v Llegada: %v Hora: %v Valor: %v\n", horaSalida.Format(time.Kitchen), horaSalida.Add(tiempoViaje).Format(time.Kitchen), tarifa.Nombre, valorViaje)
 }
 
 func main() {
