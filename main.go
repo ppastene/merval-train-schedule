@@ -71,16 +71,13 @@ func dibujarTabla(viaje structs.Viaje, itinerario structs.Itinerario, tiempoViaj
 	var horaLlegada time.Time
 	var tarifa structs.Tarifa
 	var valorViaje int
-	fmt.Printf("Origen: %v Destino: %v\n", origen.Nombre, destino.Nombre)
-	for itinerario.UltimoTren.After(horaSalida) {
-		horaLlegada = horaSalida.Add(tiempoViaje)
-		tarifa = structs.ObtenerTarifaSegunFecha(horaLlegada)
+	fmt.Printf("Itinerario de trenes MERVAL\n")
+	fmt.Printf("Origen: %v\nDestino: %v\nTiempo de Viaje: %v\n", origen.Nombre, destino.Nombre, tiempoViaje)
 		valorViaje = obtenerValorViaje(tarifa, tramo, tarjeta)
-		fmt.Printf("Salida: %v Llegada: %v Tarifa: %v Valor: %v\n", horaSalida.Format(time.Kitchen), horaLlegada.Format(time.Kitchen), tarifa.Nombre, valorViaje)
+			fmt.Printf("| Salida: %-7v | Llegada: %-7v | Tarifa: %-10v | Valor: %-3v |\n", salidaOrigen.Format(time.Kitchen), llegadaDestino.Format(time.Kitchen), tarifa.Nombre, valorViaje)
 		horaSalida = horaSalida.Add(frecuencia)
 	}
-	horaSalida = ultimoTren
-	fmt.Printf("Salida: %v Llegada: %v Hora: %v Valor: %v\n", horaSalida.Format(time.Kitchen), horaSalida.Add(tiempoViaje).Format(time.Kitchen), tarifa.Nombre, valorViaje)
+	fmt.Printf("| Salida: %-7v | Llegada: %-7v | Tarifa: %-10v | Valor: %-3v |\n", salidaOrigen.Format(time.Kitchen), salidaOrigen.Add(tiempoViaje).Format(time.Kitchen), tarifa.Nombre, valorViaje)
 }
 
 func main() {
