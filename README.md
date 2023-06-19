@@ -11,3 +11,9 @@ TODO
 - Incluir feriados como fecha para considerar en el servicio
 
 Toda la información del servicio de MERVAL ya sean valores de la tarifa, frecuencias y horarios está dentro de la carpeta docs
+
+## Instrucciones para ejecutar el codigo
+1. Tenga Go instalado en su dispositivo
+2. Descargue este repositorio y entre a la raiz del proyecto
+3. Ejecute 'go build' para compilar el proyecto
+4. Ejecute el binario obtenido de la compilación

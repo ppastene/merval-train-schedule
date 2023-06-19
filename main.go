@@ -95,4 +95,7 @@ func main() {
 	var origen, destino, tarjeta = obtenerInputs()
 	var viaje, itinerario, tiempoViaje = obtenerInfoBase(origen, destino, fecha)
 	dibujarTabla(viaje, itinerario, tiempoViaje, tarjeta)
+	fmt.Println("Presione ENTER para salir del programa")
+	fmt.Scanln()
+	fmt.Scanln()
 }
