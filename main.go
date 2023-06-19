@@ -25,13 +25,12 @@ func obtenerInputs() (int, int, int) {
 	return origen, destino, tarjeta
 }
 
-func obtenerInfoBase(origen int, destino int, hora time.Time) (structs.Viaje, structs.Itinerario, int, time.Duration) {
+func obtenerInfoBase(origen int, destino int, hora time.Time) (structs.Viaje, structs.Itinerario, time.Duration) {
 	var viaje = structs.NewViaje(structs.Estaciones[origen], structs.Estaciones[destino])
 	var itinerario = viaje.ObtenerItinerario(hora, viaje.ObtenerDireccionViaje())
-	var tramo = helpers.Abs(viaje.Origen.Tramo - viaje.Destino.Tramo)
 	var tiempoViaje = time.Duration(helpers.Abs(viaje.Origen.Duracion-viaje.Destino.Duracion)) * time.Minute
 
-	return viaje, itinerario, tramo, tiempoViaje
+	return viaje, itinerario, tiempoViaje
 }
 
 func obtenerHoraSalida(itinerario structs.Itinerario, frecuencia time.Duration, fecha time.Time) (time.Time, time.Time) {
@@ -63,31 +62,37 @@ func obtenerValorViaje(tarifa structs.Tarifa, tramo int, usuario int) int {
 	return valor
 }
 
-func dibujarTabla(viaje structs.Viaje, itinerario structs.Itinerario, tiempoViaje time.Duration, frecuencia time.Duration, tramo int, tarjeta int) {
-	origen := viaje.Origen
-	destino := viaje.Destino
-	var primerTren, ultimoTren time.Time = itinerario.PrimerTren, itinerario.UltimoTren
-	var horaSalida time.Time = primerTren
-	var horaLlegada time.Time
+func dibujarTabla(viaje structs.Viaje, itinerario structs.Itinerario, tiempoViaje time.Duration, tarjeta int) {
+	var origen, destino structs.Estacion = viaje.Origen, viaje.Destino
+	var direccion int = viaje.ObtenerDireccionViaje()
+	var tramo = viaje.ObtenerTramo()
+	var frecuencia time.Duration = time.Duration(time.Minute * 12)
+	var salidaTerminal, salidaProximoTren time.Time = itinerario.PrimerTren, itinerario.PrimerTren
+	var ultimoTren time.Time = itinerario.UltimoTren
+	var salidaOrigen, llegadaDestino time.Time
 	var tarifa structs.Tarifa
 	var valorViaje int
-	fmt.Printf("Origen: %v Destino: %v\n", origen.Nombre, destino.Nombre)
-	for itinerario.UltimoTren.After(horaSalida) {
-		horaLlegada = horaSalida.Add(tiempoViaje)
-		tarifa = structs.ObtenerTarifaSegunFecha(horaLlegada)
-		valorViaje = obtenerValorViaje(tarifa, tramo, tarjeta)
-		fmt.Printf("Salida: %v Llegada: %v Tarifa: %v Valor: %v\n", horaSalida.Format(time.Kitchen), horaLlegada.Format(time.Kitchen), tarifa.Nombre, valorViaje)
-		horaSalida = horaSalida.Add(frecuencia)
+	fmt.Printf("Itinerario de trenes MERVAL\n")
+	fmt.Printf("Origen: %v\nDestino: %v\nTiempo de Viaje: %v\n", origen.Nombre, destino.Nombre, tiempoViaje)
+	for itinerario.UltimoTren.After(salidaTerminal) {
+		if salidaTerminal.Equal(salidaProximoTren) {
+			salidaOrigen = salidaTerminal.Add(time.Duration(helpers.Abs(viaje.Origen.Duracion-structs.Estaciones[direccion].Duracion)) * time.Minute)
+			llegadaDestino = salidaOrigen.Add(tiempoViaje)
+			tarifa = structs.ObtenerTarifaSegunFecha(llegadaDestino)
+			valorViaje = obtenerValorViaje(tarifa, tramo, tarjeta)
+			fmt.Printf("| Salida: %-7v | Llegada: %-7v | Tarifa: %-10v | Valor: %-3v |\n", salidaOrigen.Format(time.Kitchen), llegadaDestino.Format(time.Kitchen), tarifa.Nombre, valorViaje)
+			salidaTerminal = salidaTerminal.Add(frecuencia)
+		}
+		salidaProximoTren = salidaProximoTren.Add(time.Minute * 1)
 	}
-	horaSalida = ultimoTren
-	fmt.Printf("Salida: %v Llegada: %v Hora: %v Valor: %v\n", horaSalida.Format(time.Kitchen), horaSalida.Add(tiempoViaje).Format(time.Kitchen), tarifa.Nombre, valorViaje)
+	salidaOrigen = ultimoTren.Add(time.Duration(helpers.Abs(viaje.Origen.Duracion-structs.Estaciones[direccion].Duracion)) * time.Minute)
+	fmt.Printf("| Salida: %-7v | Llegada: %-7v | Tarifa: %-10v | Valor: %-3v |\n", salidaOrigen.Format(time.Kitchen), salidaOrigen.Add(tiempoViaje).Format(time.Kitchen), tarifa.Nombre, valorViaje)
 }
 
 func main() {
-	fecha := time.Now()
-	frecuencia := time.Minute * 12
-
+	t := time.Now()
+	fecha := time.Date(2023, 06, 19, 8, 0, 0, 0, t.Location())
 	var origen, destino, tarjeta = obtenerInputs()
-	var viaje, itinerario, tramo, tiempoViaje = obtenerInfoBase(origen, destino, fecha)
-	dibujarTabla(viaje, itinerario, tiempoViaje, frecuencia, tramo, tarjeta)
+	var viaje, itinerario, tiempoViaje = obtenerInfoBase(origen, destino, fecha)
+	dibujarTabla(viaje, itinerario, tiempoViaje, tarjeta)
 }

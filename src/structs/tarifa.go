@@ -6,17 +6,18 @@ import (
 )
 
 type Tarifa struct {
+	Id      int
 	Nombre  string
 	Valores []int
 }
 
-func NewTarifa(n string, v []int) Tarifa {
-	return Tarifa{n, v}
+func NewTarifa(id int, n string, v []int) Tarifa {
+	return Tarifa{id, n, v}
 }
 
-var TarifaBaja = NewTarifa("Hora Baja", []int{388.0, 534.0, 769.0, 815.0, 1012.0})
-var TarifaMedia = NewTarifa("Hora Media", []int{409.0, 566.0, 811.0, 860.0, 1069.0})
-var TarifaAlta = NewTarifa("Hora Alta", []int{430.0, 590.0, 854.0, 906.0, 1126.0})
+var TarifaBaja = NewTarifa(0, "Hora Baja", []int{388.0, 534.0, 769.0, 815.0, 1012.0})
+var TarifaMedia = NewTarifa(1, "Hora Media", []int{409.0, 566.0, 811.0, 860.0, 1069.0})
+var TarifaAlta = NewTarifa(2, "Hora Alta", []int{430.0, 590.0, 854.0, 906.0, 1126.0})
 
 func ObtenerTarifaSegunFecha(t time.Time) Tarifa {
 	var tarifa Tarifa
