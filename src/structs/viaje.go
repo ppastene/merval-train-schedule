@@ -25,6 +25,10 @@ func (v Viaje) ObtenerDireccionViaje() int {
 	return 19
 }
 
+func (v Viaje) ObtenerTramo() int {
+	return helpers.Abs(v.Origen.Tramo - v.Destino.Tramo)
+}
+
 func (v Viaje) ObtenerItinerario(t time.Time, d int) Itinerario {
 	return ObtenerItinerario(t, d)
 }

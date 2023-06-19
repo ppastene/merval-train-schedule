@@ -25,13 +25,12 @@ func obtenerInputs() (int, int, int) {
 	return origen, destino, tarjeta
 }
 
-func obtenerInfoBase(origen int, destino int, hora time.Time) (structs.Viaje, structs.Itinerario, int, time.Duration) {
+func obtenerInfoBase(origen int, destino int, hora time.Time) (structs.Viaje, structs.Itinerario, time.Duration) {
 	var viaje = structs.NewViaje(structs.Estaciones[origen], structs.Estaciones[destino])
 	var itinerario = viaje.ObtenerItinerario(hora, viaje.ObtenerDireccionViaje())
-	var tramo = helpers.Abs(viaje.Origen.Tramo - viaje.Destino.Tramo)
 	var tiempoViaje = time.Duration(helpers.Abs(viaje.Origen.Duracion-viaje.Destino.Duracion)) * time.Minute
 
-	return viaje, itinerario, tramo, tiempoViaje
+	return viaje, itinerario, tiempoViaje
 }
 
 func obtenerHoraSalida(itinerario structs.Itinerario, frecuencia time.Duration, fecha time.Time) (time.Time, time.Time) {
@@ -63,9 +62,10 @@ func obtenerValorViaje(tarifa structs.Tarifa, tramo int, usuario int) int {
 	return valor
 }
 
-func dibujarTabla(viaje structs.Viaje, itinerario structs.Itinerario, tiempoViaje time.Duration, tramo int, tarjeta int) {
+func dibujarTabla(viaje structs.Viaje, itinerario structs.Itinerario, tiempoViaje time.Duration, tarjeta int) {
 	var origen, destino structs.Estacion = viaje.Origen, viaje.Destino
 	var direccion int = viaje.ObtenerDireccionViaje()
+	var tramo = viaje.ObtenerTramo()
 	var frecuencia time.Duration = time.Duration(time.Minute * 12)
 	var salidaTerminal, salidaProximoTren time.Time = itinerario.PrimerTren, itinerario.PrimerTren
 	var ultimoTren time.Time = itinerario.UltimoTren
@@ -93,6 +93,6 @@ func main() {
 	t := time.Now()
 	fecha := time.Date(2023, 06, 19, 8, 0, 0, 0, t.Location())
 	var origen, destino, tarjeta = obtenerInputs()
-	var viaje, itinerario, tramo, tiempoViaje = obtenerInfoBase(origen, destino, fecha)
-	dibujarTabla(viaje, itinerario, tiempoViaje, tramo, tarjeta)
+	var viaje, itinerario, tiempoViaje = obtenerInfoBase(origen, destino, fecha)
+	dibujarTabla(viaje, itinerario, tiempoViaje, tarjeta)
 }
